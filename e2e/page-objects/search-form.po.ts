@@ -1,21 +1,23 @@
-import { element, by, ElementFinder } from 'protractor';
+import { by, element } from "protractor";
 
-module.exports = {
-    get input() {
-        return element(by.id('query'));
-    },
-    get searchBtn() {
-        return element(by.css('button'));
-    },
-    get firstCharacterName() {
-        return element(by.css('app-character h6'));
-    },
+export default {
+  get firstCharacterName() {
+    return element(by.css("app-character h6"));
+  },
 
-    get resultNotFoundLabel() {
-        return element(by.cssContainingText('div', 'Not found.'));
-    },
+  get input() {
+    return element(by.id("query"));
+  },
 
-    get searchPlanetOption() {
-        return element(by.css('#planets'));
-    }
+  get resultNotFoundLabel() {
+    return element(by.cssContainingText("div", "Not found."));
+  },
+
+  get searchButton() {
+    return element(by.css("button"));
+  },
+
+  get searchPlanetOption() {
+    return element(by.css("#planets"));
+  },
 };

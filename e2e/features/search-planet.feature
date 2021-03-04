@@ -3,13 +3,10 @@
     Background: Application is launched in a browser
     Given I navigate to "localhost"
     
-    Scenario Outline: Search a planet by full name
+    Scenario: Search a planet by full name
         When I click on planet option
-        And I search for <name>
+        And I search for Hoth
         Then I see hoth's details
-        Examples:
-            |name   |
-            |Hoth   | 
 
     Scenario Outline: Search planet by invalid name
         When I click on planet option

@@ -1,32 +1,31 @@
-import { element, by, ElementFinder } from 'protractor';
+import { by, element, ElementFinder } from "protractor";
 
-module.exports = {
+export default {
+  planetClimate(i: number): ElementFinder {
+    return element(by.css(".planet-" + i + " .row-climate .col-sm-10"));
+  },
 
-    planetName(i: number): ElementFinder {
-        return element(by.css('.planet-' + i + ' h6'))
-    },
+  planetClimateLabel(i: number): ElementFinder {
+    return element(by.css(".planet-" + i + " .row-climate .col-sm-2"));
+  },
 
-    planetPopulationLabel(i: number): ElementFinder {
-        return element(by.css('.planet-' + i + ' .row-population .col-sm-2'))
-    },
+  planetGravity(i: number): ElementFinder {
+    return element(by.css(".planet-" + i + " .row-gravity .col-sm-10"));
+  },
 
-    planetPopulation(i: number): ElementFinder {
-        return element(by.css('.planet-' + i + ' .row-population .col-sm-10'))
-    },
+  planetGravityLabel(i: number): ElementFinder {
+    return element(by.css(".planet-" + i + " .row-gravity .col-sm-2"));
+  },
 
-    planetClimateLabel(i: number): ElementFinder {
-        return element(by.css('.planet-' + i + ' .row-climate .col-sm-2'))
-    },
+  planetName(i: number): ElementFinder {
+    return element(by.css(".planet-" + i + " h6"));
+  },
 
-    planetClimate(i: number): ElementFinder {
-        return element(by.css('.planet-' + i + ' .row-climate .col-sm-10'))
-    },
+  planetPopulation(i: number): ElementFinder {
+    return element(by.css(".planet-" + i + " .row-population .col-sm-10"));
+  },
 
-    planetGravityLabel(i: number): ElementFinder {
-        return element(by.css('.planet-' + i + ' .row-gravity .col-sm-2'))
-    },
-
-    planetGravity(i: number): ElementFinder {
-        return element(by.css('.planet-' + i + ' .row-gravity .col-sm-10'))
-    },
+  planetPopulationLabel(i: number): ElementFinder {
+    return element(by.css(".planet-" + i + " .row-population .col-sm-2"));
+  },
 };

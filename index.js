@@ -10,7 +10,7 @@ var options = {
         metadata: {    
             "App Version":"1.0.0",    
             "Test Environment": "STAGING",    
-            "Browser": "Chrome  54.0.2840.98",    
+            "Browser": "Chrome  89.0.0.0",    
             "Platform": "Mac",      
         }    
     };    

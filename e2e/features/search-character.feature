@@ -3,39 +3,29 @@ Feature: Search for a Star Wars character
 Background: Application is launched in a browser
     Given I navigate to "localhost"
     
-    Scenario Outline: When a character is searched by full name
-        When I search for <name>
-        Then I see Lukes details
-        Examples:
-            |name          |
-            |Luke Skywalker| 
+    Scenario: When a character is searched by full name
+        When I search for Luke Skywalker
+        Then I see Lukes details 
 
-    Scenario Outline: When a character is searchedy by first name
-        When I search for <name>
+    Scenario: When a character is searchedy by first name
+        When I search for Luke
         Then I see Lukes details
         And I see 1 results
-         Examples:
-            |name|
-            |Luke| 
 
-     Scenario Outline: When a character is searched by last name
-        When I search for <name>
+     Scenario: When a character is searched by last name
+        When I search for Skywalker
         Then I see 3 results
         And I see details of Luke Skywalker, Anakin Skywalker and Shmi Skywalker
-        Examples:
-            |name     |
-            |Skywalker|
 
-    Scenario Outline: When a character is searched by partial first name
-        When I search for <name>
+    Scenario: When a character is searched by partial first name
+        When I search for Lu
         Then I see details of Luke Skywalker and Luminara Unduli
-        Examples:
-            |name  |
-            |Lu    |
 
-    Scenario Outline: When a character is searched by invalid name
-        When I search for <name>
+    Scenario: When a character is searched by invalid name
+        When I search for @&#*
         Then I should see no results
-        Examples:
-            |name  |
-            |@&#*  |
+    
+    Scenario: When a search query is removed and search is performed again
+        When I search for Luke Skywalker
+        And I delete search query and search again
+        Then Search results should be remove

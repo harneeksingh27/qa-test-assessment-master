@@ -9,7 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "./node_modules/protractor/bin/webdriver-manager update"
+    "postinstall": "./node_modules/protractor/bin/webdriver-manager update",
+    "format": "prettier --write ./e2e/**/*.ts"
   },
   "private": true,
   "dependencies": {
@@ -24,6 +25,7 @@
     "@angular/router": "7.2.4",
     "core-js": "^2.6.11",
     "mocha-allure-reporter": "^1.4.0",
+    "prettier": "^2.2.1",
     "rxjs": "^6.5.5",
     "rxjs-compat": "^6.5.5",
     "zone.js": "0.8.29"

@@ -1,71 +1,124 @@
-import { async } from "@angular/core/testing";
+import * as chai from "chai";
+import { Given, setDefaultTimeout, Then, When } from "cucumber";
+import { browser } from "protractor";
+import characterPage from "../page-objects/character-page.po";
+import helper from "../helpers/app.helpers";
+import { CHARACTERS, PLANETS } from "../helpers/test-data";
+import searchForm from "../page-objects/search-form.po";
 
-const { Given, When, Then } = require('cucumber');
-var { setDefaultTimeout } = require('cucumber');
+chai.use(require("chai-as-promised"));
 setDefaultTimeout(60 * 1000);
-const { browser } = require('protractor');
-const chai = require('chai');
-chai.use(require('chai-as-promised'));
 
-const searchFormPO = require('../page-objects/search-form.po');
-const characterPage = require('../page-objects/character-page.po');
-const helper = require('../helpers/app.helpers');
+Given("I navigate to {string}", async (string) => {
+  await browser.get("http://" + string + ":4200/");
 
-Given('I navigate to {string}', async (string) => {
-    await browser.get('http://' + string + ':4200/');
-
-    if (browser.getCurrentUrl()) {
-        return browser.getCurrentUrl().then(function (text) {
-            chai.expect(text).to.contain('http://localhost:4200/');
-        });
-    }
+  if (browser.getCurrentUrl()) {
+    const url = await browser.getCurrentUrl();
+    chai.expect(url).to.contain("http://localhost:4200/");
+  }
 });
 
-Then('I see Lukes details', async () => {
-    await helper.verifyCharacterDetails(1, 'Skywalker', 'male', '19BBY', 'blue', 'fair')
+Then("I see Lukes details", async () => {
+  await helper.verifyCharacterDetails(
+    CHARACTERS.luke.characterIndex,
+    CHARACTERS.luke.name,
+    CHARACTERS.luke.gender,
+    CHARACTERS.luke.birthYear,
+    CHARACTERS.luke.eyeColor,
+    CHARACTERS.luke.skinColor
+  );
 });
 
-Then('I see {int} results', async function (resultSize) {
-    const size = await characterPage.charactersDisplayed.count()
-    chai.expect(size).to.be.equal(resultSize)
+Then("I see {int} results", async function (resultSize) {
+  const size = await characterPage.charactersDisplayed.count();
+  chai.expect(size).to.be.equal(resultSize);
 });
 
-Then('I see details of Luke Skywalker, Anakin Skywalker and Shmi Skywalker', async () => {
+Then(
+  "I see details of Luke Skywalker, Anakin Skywalker and Shmi Skywalker",
+  async () => {
+    await helper.verifyCharacterDetails(
+      CHARACTERS.luke.characterIndex,
+      CHARACTERS.luke.name,
+      CHARACTERS.luke.gender,
+      CHARACTERS.luke.birthYear,
+      CHARACTERS.luke.eyeColor,
+      CHARACTERS.luke.skinColor
+    );
+    await helper.verifyCharacterDetails(
+      CHARACTERS.anakin.characterIndex,
+      CHARACTERS.anakin.name,
+      CHARACTERS.anakin.gender,
+      CHARACTERS.anakin.birthYear,
+      CHARACTERS.anakin.eyeColor,
+      CHARACTERS.anakin.skinColor
+    );
+    await helper.verifyCharacterDetails(
+      CHARACTERS.shmi.characterIndex,
+      CHARACTERS.shmi.name,
+      CHARACTERS.shmi.gender,
+      CHARACTERS.shmi.birthYear,
+      CHARACTERS.shmi.eyeColor,
+      CHARACTERS.shmi.skinColor
+    );
+  }
+);
 
-    await helper.verifyCharacterDetails(1, 'Luke Skywalker', 'male', '19BBY', 'blue', 'fair')
-    await helper.verifyCharacterDetails(2, 'Anakin Skywalker', 'male', '41.9BBY', 'blue', 'fair')
-    await helper.verifyCharacterDetails(3, 'Shmi Skywalker', 'female', '72BBY', 'brown', 'fair')
-
+Then("I see details of Luke Skywalker and Luminara Unduli", async () => {
+  await helper.verifyCharacterDetails(
+    CHARACTERS.luke.characterIndex,
+    CHARACTERS.luke.name,
+    CHARACTERS.luke.gender,
+    CHARACTERS.luke.birthYear,
+    CHARACTERS.luke.eyeColor,
+    CHARACTERS.luke.skinColor
+  );
+  await helper.verifyCharacterDetails(
+    CHARACTERS.luminara.characterIndex,
+    CHARACTERS.luminara.name,
+    CHARACTERS.luminara.gender,
+    CHARACTERS.luminara.birthYear,
+    CHARACTERS.luminara.eyeColor,
+    CHARACTERS.luminara.skinColor
+  );
 });
 
-
-Then('I see details of Luke Skywalker and Luminara Unduli', async () => {
-    await helper.verifyCharacterDetails(1, 'Luke Skywalker', 'male', '19BBY', 'blue', 'fair')
-    await helper.verifyCharacterDetails(2, 'Luminara Unduli', 'male', '58BBY', 'blue', 'yellow')
+Then("I should see no results", async () => {
+  await chai.expect(searchForm.resultNotFoundLabel.isDisplayed()).eventually.be
+    .true;
 });
 
-Then('I should see no results', async () => {
-    await chai.expect(searchFormPO.resultNotFoundLabel.isDisplayed()).eventually.be.true
-});
-
-
-Then('I see hoth\'s details', async () => {
-
-    await helper.verifyPlanetSearchTable(1)
-    await helper.verifyPlanetDetails(1, 'Hoth', 'unknown', 'frozen', '1.1 standard')
-
+Then("I see hoth's details", async () => {
+  await helper.verifyPlanetSearchTable(1);
+  await helper.verifyPlanetDetails(
+    PLANETS.hoth.planetIndex,
+    PLANETS.hoth.name,
+    PLANETS.hoth.population,
+    PLANETS.hoth.climate,
+    PLANETS.hoth.gravity
+  );
 });
 
 When(/^I search for ([^]*)$/, async function (name) {
-    await helper.performSearch(name);
+  await helper.performSearch(name);
 });
 
-When('I click on planet option', async () => {
-    await searchFormPO.searchPlanetOption.click();
+When("I click on planet option", async () => {
+  await searchForm.searchPlanetOption.click();
 });
 
+When("I click on planet and click search button", async () => {
+  await searchForm.searchPlanetOption.click();
+  await searchForm.searchButton.click();
+});
 
-When('I click on planet and click search button', async () => {
-    await searchFormPO.searchPlanetOption.click();
-    await searchFormPO.searchBtn.click();
+When("I delete search query and search again", async () => {
+  await searchForm.input.clear();
+  await searchForm.searchButton.click();
+});
+
+Then("Search results should be remove", async () => {
+  await chai
+    .expect(characterPage.characterName(1).isPresent())
+    .to.become(false);
 });
